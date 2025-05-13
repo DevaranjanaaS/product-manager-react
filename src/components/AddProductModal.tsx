@@ -55,6 +55,26 @@ const AddProductModal: React.FC = () => {
     },
   });
 
+  // Helper function to safely format category names
+  const formatCategoryName = (category: any): string => {
+    if (typeof category === 'string') {
+      return category.charAt(0).toUpperCase() + category.slice(1);
+    } else if (typeof category === 'object' && category !== null && 'name' in category) {
+      // Handle case where category might be an object with a name property
+      return category.name;
+    }
+    // Fallback for other cases
+    return String(category);
+  };
+
+  // Helper function to get category value
+  const getCategoryValue = (category: any): string => {
+    if (typeof category === 'object' && category !== null && 'slug' in category) {
+      return category.slug;
+    }
+    return String(category);
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const newProduct: NewProduct = {
       title: values.title,
@@ -121,11 +141,16 @@ const AddProductModal: React.FC = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category.charAt(0).toUpperCase() + category.slice(1)}
-                        </SelectItem>
-                      ))}
+                      {categories.map((category) => {
+                        const categoryValue = getCategoryValue(category);
+                        const displayName = formatCategoryName(category);
+                        
+                        return (
+                          <SelectItem key={categoryValue} value={categoryValue}>
+                            {displayName}
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                   <FormMessage />
