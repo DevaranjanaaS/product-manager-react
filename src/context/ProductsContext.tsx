@@ -4,10 +4,16 @@ import { Product, NewProduct } from "@/types/product";
 import { fetchProducts, fetchCategories } from "@/services/productsAPI";
 import { toast } from "@/components/ui/use-toast";
 
+interface Category {
+  slug: string;
+  name: string;
+  url: string;
+}
+
 interface ProductsContextType {
   products: Product[];
   filteredProducts: Product[];
-  categories: string[];
+  categories: Category[] | string[];
   searchTerm: string;
   selectedCategory: string;
   sortConfig: {
@@ -27,7 +33,7 @@ const ProductsContext = createContext<ProductsContextType | undefined>(undefined
 export const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[] | string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all-categories");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
