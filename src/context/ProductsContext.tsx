@@ -29,7 +29,7 @@ export const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all-categories");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +70,7 @@ export const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
 
     // Apply category filter
-    if (selectedCategory) {
+    if (selectedCategory && selectedCategory !== 'all-categories') {
       result = result.filter(product => product.category === selectedCategory);
     }
 
